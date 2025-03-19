@@ -1,6 +1,8 @@
 import cors from 'cors';
 import { NextFunction, Request, Response } from 'express';
 import * as ws from 'ws';
+import axios from 'axios';
+
 
 import {
   COLLABORATION_SERVER_ORIGIN,
@@ -43,14 +45,6 @@ export const wsSecurity = (
   if (origin && !allowedOrigins.includes(origin)) {
     ws.close(4001, 'Origin not allowed');
     console.error('CORS policy violation: Invalid Origin', origin);
-    return;
-  }
-
-  // Secret API Key check
-  const apiKey = req.headers['authorization'];
-  if (apiKey !== COLLABORATION_SERVER_SECRET) {
-    console.error('Forbidden: Invalid API Key');
-    ws.close();
     return;
   }
 
